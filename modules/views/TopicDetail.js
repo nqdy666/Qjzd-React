@@ -5,30 +5,31 @@ import config from '../config';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
-export default React.createClass({
+export default class TopicDetail extends React.Component {
 
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       topic: {}
-    };
-  },
-
-  getTopic() {
-    $.getJSON(config.apiUrl + '/topic/' + this.props.params.topicId, function (ret) {
-      console.log(ret.data);
-      this.setState({
-        topic: ret.data
-      });
-    }.bind(this));
+    }
   },
 
   componentDidMount() {
     this.getTopic();
   },
 
+  getTopic() {
+    $.getJSON(`${config.apiUrl}/topic/${this.props.params.topicId}`, (ret) => {
+      console.log(ret.data);
+      this.setState({
+        topic: ret.data
+      });
+    });
+  },
+
   render() {
     console.log('render');
-    let topic = this.state.topic;
+    const topic = this.state.topic;
     if (Object.keys(topic).length === 0) {
       return (<div>加载中,请稍后...</div>);
     }
@@ -48,28 +49,28 @@ export default React.createClass({
             来自{config.getTab(topic.tab).cnName}
           </p>
         </div>
-        <div dangerouslySetInnerHTML={{__html:topic.content}}></div>
+        <div dangerouslySetInnerHTML={ { __html:topic.content } }></div>
         <div className="page-header">
           <h4>回复({topic.reply_count})</h4>
         </div>
-        { topic.replies.length ? topic.replies.map(function (reply, index) {
+        { topic.replies.length ? topic.replies.map((reply, index) => {
           return (
             <div key={index} className="media">
               <div className="media-left">
-                <Link to={'/user/' + reply.author.loginname}>
-                  <img className="media-object" src={reply.author.avatar_url} width="40"
-                       height="40" title={reply.author.loginname}/>
+                <Link to={`/user/${reply.author.loginname}`}>
+                  <img className="media-object" src={reply.author.avatar_url}
+                    width="40" height="40" title={reply.author.loginname}/>
                 </Link>
               </div>
               <div className="media-body">
-                                <span className="pull-right">
-                                    <i className="fa fa-thumbs-o-up"></i>{reply.ups.length}
-                                </span>
+                <span className="pull-right">
+                    <i className="fa fa-thumbs-o-up"></i>{reply.ups.length}
+                </span>
                 <h5 className="media-heading">
                   <Link to={'/user/' + reply.author.loginname}>{reply.author.loginname}</Link>
                   <span className="reply-date">发表于{moment(reply.create_at).fromNow()}</span>
                 </h5>
-                <div dangerouslySetInnerHTML={{__html: reply.content}}></div>
+                <div dangerouslySetInnerHTML={ { __html: reply.content } }></div>
               </div>
             </div>
           );
@@ -77,4 +78,4 @@ export default React.createClass({
       </div>
     );
   }
-});
+};
