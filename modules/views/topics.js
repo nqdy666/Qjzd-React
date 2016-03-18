@@ -7,9 +7,9 @@ import 'moment/locale/zh-cn';
 
 moment.locale('zh-cn');
 
-let Label = React.createClass({
+class Label extends React.Component {
   render() {
-    var data = this.props.data;
+    const data = this.props.data;
     if (data.top) {
       return <label className="label label-success">置顶</label>;
     }
@@ -18,110 +18,123 @@ let Label = React.createClass({
     }
     return <label className="label label-default">{config.getTab(data.tab).cnName}</label>;
   }
-});
+}
 
-let TabLink = React.createClass({
+class TabLink extends React.Component {
   render() {
     return (
-      <Link {...this.props} activeClassName="active"/>
+      <Link {...this.props} activeClassName="active" />
     );
   }
-});
+}
 
-export default React.createClass({
+export default class Topics extends React.Component {
 
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       page: 1,
       data: [],
       tab: this.props.params.tab
     };
-  },
-
-  getTopics(callback) {
-    $.getJSON(config.apiUrl + '/topics', {
-      page: this.state.page,
-      limit: 10,
-      tab: this.state.tab
-    }, function (ret) {
-      this.setState({
-        page: this.state.page + 1,
-        data: this.state.data.concat(ret.data)
-      }, function () {
-        console.log('tab:' + this.state.tab + ':state:' + this.state.data.length + ':page:' + this.state.page);
-        if ($.isFunction(callback)) {
-          callback();
-        }
-
-      }.bind(this));
-    }.bind(this));
-  },
+  }
 
   componentWillMount() {
     console.log('componentWillMount');
     this.getTopics();
-  },
+  }
 
   componentDidMount() {
     console.log('componentDidMount');
 
     let loading = false;
-    $(window).on('scroll', function () {
-      let fromBottom = $(document).height() - $(window).height() - $(window).scrollTop();
+    $(window).on('scroll', () => {
+      const fromBottom = $(document).height() - $(window).height() - $(window).scrollTop();
       if (fromBottom <= 10 && !loading) {
         loading = true;
-        this.getTopics(function () {
+        this.getTopics(() => {
           loading = false;
         });
       }
-    }.bind(this));
-  },
+    });
+  }
 
-  componentWillUpdate() {
-    console.log('componentWillUpdate');
-
-
-  },
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  },
-  componentWillUnmount() {
-    console.log('componentWillUnmount');
-    $(window).unbind('scroll');
-  },
   componentWillReceiveProps(prevProps) {
-    console.log('componentWillReceiveProps, nextTab:' + prevProps.params.tab);
+    console.log(`componentWillReceiveProps, nextTab:${prevProps.params.tab}`);
     this.state = {
       tab: prevProps.params.tab,
       page: 1,
       data: []
     };
     this.getTopics();
-  },
+  }
+
+  componentWillUpdate() {
+    console.log('componentWillUpdate');
+  }
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+    $(window).unbind('scroll');
+  }
+
+  getTopics(callback) {
+    $.getJSON(`${config.apiUrl}/topics`, {
+      page: this.state.page,
+      limit: 10,
+      tab: this.state.tab
+    }, (ret) => {
+      this.setState({
+        page: this.state.page + 1,
+        data: this.state.data.concat(ret.data)
+      }, () => {
+        console.log(`tab:${this.state.tab}:state:
+          ${this.state.data.length}:page:${this.state.page}`);
+        if ($.isFunction(callback)) {
+          callback();
+        }
+      });
+    });
+  }
+
 
   render() {
-    console.log('render' + ',state:' + this.state.data.length);
+    console.log(`render,state:${this.state.data.length}`);
     return (
       <div className="container">
         <ul className="nav nav-tabs">
-          <li><TabLink to="/topics/all" className={!this.props.params.tab? 'active': ''}>全部</TabLink></li>
+          <li>
+            <TabLink to="/topics/all" className={!this.props.params.tab ? 'active' : ''}>
+              全部
+            </TabLink>
+          </li>
           <li><TabLink to="/topics/good">精华</TabLink></li>
-          { config.tabJson.map((tab, index) => <li key={index}><TabLink
-            to={'/topics/' + tab.name}>{tab.cnName}</TabLink></li>)}
+          {
+            config.tabJson.map((tab, index) =>
+            (
+              <li key={index}>
+                <TabLink to={`/topics/${tab.name}`}>{tab.cnName}</TabLink>
+              </li>
+            )
+          )}
         </ul>
-        {this.state.data.map(function (item) {
-          return (
+        {
+          this.state.data.map((item) =>
+          (
             <div key={item.id} className="media">
               <div className="media-left">
-                <Link property="" to={'/user/' + item.author.loginname}>
+                <Link property="" to={`/user/${item.author.loginname}`}>
                   <img className="media-object" src={item.author.avatar_url}
-                       width="40" height="40" title={item.author.loginname}/>
+                    width="40" height="40" title={item.author.loginname}
+                  />
                 </Link>
               </div>
               <div className="media-body">
                 <h4 className="media-heading">
-                  <Label data={item}/>
-                  <Link topicId={item.id} to={'/topic/' + item.id}>{item.title}</Link>
+                  <Label data={item} />
+                  <Link topicId={item.id} to={`/topic/${item.id}`}>{item.title}</Link>
                 </h4>
                 <p className="media-count">
                   <i className="fa fa-hand-pointer-o"></i>{item.visit_count}
@@ -130,9 +143,9 @@ export default React.createClass({
                 </p>
               </div>
             </div>
-          );
-        }.bind(this))}
+          )
+        )}
       </div>
     );
   }
-});
+}

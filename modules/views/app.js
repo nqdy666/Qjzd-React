@@ -1,16 +1,17 @@
 import React from 'react';
-import NavBar from './navbar';
-import Footer from './footer';
+import NavBar from './NavBar';
+import Footer from './Footer';
 
-export default React.createClass({
+
+export default class App extends React.Component {
   render() {
     return (
       <div>
         <NavBar />
-        <br/>
+        <br />
         {this.props.children}
         <Footer />
       </div>
     );
   }
-});
+}

@@ -11,12 +11,12 @@ export default class TopicDetail extends React.Component {
     super(props);
     this.state = {
       topic: {}
-    }
-  },
+    };
+  }
 
   componentDidMount() {
     this.getTopic();
-  },
+  }
 
   getTopic() {
     $.getJSON(`${config.apiUrl}/topic/${this.props.params.topicId}`, (ret) => {
@@ -25,7 +25,7 @@ export default class TopicDetail extends React.Component {
         topic: ret.data
       });
     });
-  },
+  }
 
   render() {
     console.log('render');
@@ -49,17 +49,17 @@ export default class TopicDetail extends React.Component {
             来自{config.getTab(topic.tab).cnName}
           </p>
         </div>
-        <div dangerouslySetInnerHTML={ { __html:topic.content } }></div>
+        <div dangerouslySetInnerHTML={ { __html: topic.content } }></div>
         <div className="page-header">
           <h4>回复({topic.reply_count})</h4>
         </div>
-        { topic.replies.length ? topic.replies.map((reply, index) => {
-          return (
+        { topic.replies.length ? topic.replies.map((reply, index) => (
             <div key={index} className="media">
               <div className="media-left">
                 <Link to={`/user/${reply.author.loginname}`}>
                   <img className="media-object" src={reply.author.avatar_url}
-                    width="40" height="40" title={reply.author.loginname}/>
+                    width="40" height="40" title={reply.author.loginname}
+                  />
                 </Link>
               </div>
               <div className="media-body">
@@ -67,15 +67,15 @@ export default class TopicDetail extends React.Component {
                     <i className="fa fa-thumbs-o-up"></i>{reply.ups.length}
                 </span>
                 <h5 className="media-heading">
-                  <Link to={'/user/' + reply.author.loginname}>{reply.author.loginname}</Link>
+                  <Link to={`/user/${reply.author.loginname}`}>{reply.author.loginname}</Link>
                   <span className="reply-date">发表于{moment(reply.create_at).fromNow()}</span>
                 </h5>
                 <div dangerouslySetInnerHTML={ { __html: reply.content } }></div>
               </div>
             </div>
-          );
-        }) : <div className="text-center">暂无回复</div>};
+          )
+        ) : <div className="text-center">暂无回复</div>};
       </div>
     );
   }
-};
+}
