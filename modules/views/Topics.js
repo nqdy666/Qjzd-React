@@ -35,18 +35,18 @@ export default class Topics extends React.Component {
     this.state = {
       page: 1,
       data: [],
-      tab: this.props.params.tab
+      tab: this.props.params.tab ? this.props.params.tab : 'all'
     };
   }
 
   componentWillMount() {
     console.log('componentWillMount');
-    this.getTopics();
   }
 
   componentDidMount() {
     console.log('componentDidMount');
 
+    this.getTopics();
     let loading = false;
     $(window).on('scroll', () => {
       const fromBottom = $(document).height() - $(window).height() - $(window).scrollTop();
@@ -61,34 +61,42 @@ export default class Topics extends React.Component {
 
   componentWillReceiveProps(prevProps) {
     console.log(`componentWillReceiveProps, nextTab:${prevProps.params.tab}`);
-    this.state = {
-      tab: prevProps.params.tab,
-      page: 1,
-      data: []
-    };
-    this.getTopics();
+    this.getTopics(null, prevProps.params.tab);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('shouldComponentUpdate');
+    return this.state !== nextState;
   }
 
   componentWillUpdate() {
     console.log('componentWillUpdate');
   }
+
   componentDidUpdate() {
     console.log('componentDidUpdate');
   }
+
   componentWillUnmount() {
     console.log('componentWillUnmount');
     $(window).unbind('scroll');
   }
 
-  getTopics(callback) {
+  getTopics(callback, newTab) {
+    let { tab, page, data } = this.state;
+    if (newTab) {
+      tab = newTab;
+      page = 1;
+      data = [];
+    }
     $.getJSON(`${config.apiUrl}/topics`, {
-      page: this.state.page,
-      limit: 10,
-      tab: this.state.tab
+      page,
+      tab
     }, (ret) => {
       this.setState({
-        page: this.state.page + 1,
-        data: this.state.data.concat(ret.data)
+        page: page + 1,
+        tab,
+        data: data.concat(ret.data)
       }, () => {
         console.log(`tab:${this.state.tab}:state:
           ${this.state.data.length}:page:${this.state.page}`);
@@ -98,7 +106,6 @@ export default class Topics extends React.Component {
       });
     });
   }
-
 
   render() {
     console.log(`render,state:${this.state.data.length}`);
