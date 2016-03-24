@@ -20,7 +20,6 @@ export default class TopicDetail extends React.Component {
 
   getTopic() {
     $.getJSON(`${config.apiUrl}/topic/${this.props.params.topicId}`, (ret) => {
-      console.log(ret.data);
       this.setState({
         topic: ret.data
       });
@@ -28,7 +27,6 @@ export default class TopicDetail extends React.Component {
   }
 
   render() {
-    console.log('render');
     const topic = this.state.topic;
     if (Object.keys(topic).length === 0) {
       return (<div>加载中,请稍后...</div>);

@@ -119,7 +119,7 @@ export default class Topics extends React.Component {
           </li>
           <li><TabLink to="/topics/good">精华</TabLink></li>
           {
-            config.tabJson.map((tab, index) =>
+          config.tabJson.map((tab, index) =>
             (
               <li key={index}>
                 <TabLink to={`/topics/${tab.name}`}>{tab.cnName}</TabLink>
