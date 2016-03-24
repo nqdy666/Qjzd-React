@@ -76,5 +76,7 @@ body {
 }
 
 .active {
-    color: red;
+    text-decoration: none;
+    background-color: #e6e6e6;
+    color: #165ba8;
 }
