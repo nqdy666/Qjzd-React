@@ -4,4 +4,4 @@ node_modules
 npm-debug.log
 bundle.js
 server.bundle.js
-build
+public

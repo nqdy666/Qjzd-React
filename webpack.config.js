@@ -13,7 +13,7 @@ module.exports = {
   entry: __dirname + '/app/index.js',
 
   output: {
-    path: __dirname + '/build',
+    path: __dirname + '/public',
     publicPath: '/',
     filename: './bundle.js'
   },
@@ -33,6 +33,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: './app/index.html', to: 'index.html' },
+      { from: './app/routes.js', to: 'routes.js' },
       { from: './app/css', to: 'css' },
       { from: './app/fonts', to: 'fonts' }
     ])
