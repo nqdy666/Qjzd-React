@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import { expect } from 'chai';
 import ReactTestUtils from 'react-addons-test-utils';
 import TestUtils from '../TestUtils';
-import NavBar from '../../modules/views/NavBar';
+import NavBar from '../../app/components/NavBar';
 
 describe('NavBar Shallow Rendering', function() {
   const navbar = TestUtils.shallowRender(NavBar);

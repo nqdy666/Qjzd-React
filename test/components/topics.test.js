@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import { expect } from 'chai';
 import ReactTestUtils from 'react-addons-test-utils';
 import TestUtils from '../TestUtils';
-import Topics from '../../modules/views/Topics';
+import Topics from '../../app/components/Topics';
 
 describe('Topics Shallow Rendering', function() {
   const topics = TestUtils.shallowRender(Topics, {params: {}});

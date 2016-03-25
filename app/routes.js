@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import App from './views/App';
-import Topics from './views/Topics';
-import TopicDetail from './views/TopicDetail';
-import UserDetail from './views/UserDetail';
+import App from './components/App';
+import Topics from './components/Topics';
+import TopicDetail from './components/TopicDetail';
+import UserDetail from './components/UserDetail';
 
 export default (
   <Route path="/" component={App}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import ReactTestUtils from 'react-addons-test-utils';
 import TestUtils from '../TestUtils';
-import Footer from '../../modules/views/Footer';
+import Footer from '../../app/components/Footer';
 
 describe('Footer Shallow Rendering', function() {
   const footer = TestUtils.shallowRender(Footer);

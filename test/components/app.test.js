@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import ReactTestUtils from 'react-addons-test-utils';
 import TestUtils from '../TestUtils';
-import App from '../../modules/views/App';
+import App from '../../app/components/App';
 
 describe('App Shallow Rendering', function() {
   const app = TestUtils.shallowRender(App);

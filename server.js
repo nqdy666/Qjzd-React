@@ -1,13 +1,13 @@
 import path from 'path';
 import express from 'express';
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom';
 import { match, RouterContext } from 'react-router';
-import routes from './modules/routes';
+import routes from './app/routes';
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './build')));
 
 const renderPage = appHtml =>
   `
@@ -50,7 +50,8 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(8080, () => {
-  console.log('The server is running at port: 8080');
+const port = 8080;
+app.listen(port, () => {
+  console.log(`The server is running at port: ${port}`);
 });
 

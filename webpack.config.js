@@ -1,23 +1,40 @@
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './modules/index.js',
+  devServer: {
+    historyApiFallback: true,
+    inline: true,
+    progress: true,
+    contentBase: __dirname + "/app",
+    port: 8080
+  },
 
-    output: {
-        path: 'public',
-        filename: 'bundle.js',
-        publicPath: ''
-    },
+  entry: __dirname + '/app/index.js',
 
-    module: {
-        loaders: [
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=react' }
-        ]
-    },
+  output: {
+    path: __dirname + '/build',
+    publicPath: '/',
+    filename: './bundle.js'
+  },
 
-    plugins: process.env.NODE_ENV === 'production'? [
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.OccurrentOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin()
-    ]: []
+  module: {
+    loaders: [
+      {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
+    ]
+  },
+
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new CopyWebpackPlugin([
+      { from: './app/index.html', to: 'index.html' },
+      { from: './app/css', to: 'css' },
+      { from: './app/fonts', to: 'fonts' }
+    ])
+  ]
 };

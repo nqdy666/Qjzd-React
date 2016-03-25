@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import { expect } from 'chai';
 import ReactTestUtils from 'react-addons-test-utils';
 import TestUtils from '../TestUtils';
-import UserDetail from '../../modules/views/UserDetail';
+import UserDetail from '../../app/components/UserDetail';
 
 describe('UserDetail Shallow Rendering', function() {
   const userDetail = TestUtils.shallowRender(UserDetail, {params: {}});

@@ -3,9 +3,9 @@ import { findDOMNode } from 'react-dom'
 import { expect } from 'chai';
 import ReactTestUtils from 'react-addons-test-utils';
 import TestUtils from '../TestUtils';
-import TopicDetail from '../../modules/views/TopicDetail';
+import TopicDetail from '../../app/components/TopicDetail';
 import request from 'superagent';
-import config from '../../modules/config';
+import config from '../../app/config';
 
 describe('TopicDetail Shallow Rendering', function() {
   it ('加载中', function() {
