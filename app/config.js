@@ -6,6 +6,10 @@ export default {
   tabJson: [
     { name: 'share', cnName: '分享' },
     { name: 'ask', cnName: '问答' },
+    { name: 'coder', cnName: '码农' },
+    { name: 'shoot', cnName: '摄影' },
+    { name: 'bike', cnName: '单车' },
+    { name: 'talk', cnName: '聊聊' },
     { name: 'love', cnName: '爱情' }
   ],
 
